@@ -1,8 +1,16 @@
 # Playwright SauceDemo Automation Framework
 
 ## Overview
-This project is an end-to-end UI automation framework built using Playwright and TypeScript following the Page Object Model (POM) design pattern.
-The framework automates core SauceDemo functionalities including login, cart, checkout, logout, and negative test scenarios.
+This project is an end-to-end UI automation framework developed using Playwright with TypeScript following the Page Object Model (POM) design pattern.
+
+The framework automates core SauceDemo functionalities including:
+- Login
+- Negative Login Validation
+- Add to Cart
+- Checkout Flow
+- Logout Flow
+
+The framework is designed with reusable components, fixtures, data-driven testing, and scalable test architecture.
 
 ## Tech Stack
 - Playwright
@@ -11,26 +19,38 @@ The framework automates core SauceDemo functionalities including login, cart, ch
 
 ## Framework Features
 - Page Object Model (POM)
-- Data-driven testing using JSON
-- Reusable fixtures
-- Cross-browser execution
-- HTML reporting
-- Screenshot capture on failure
-- Video recording on failure
-- Trace generation for debugging
+- Reusable Fixtures
+- Data-Driven Testing using JSON
+- Cross-Browser Execution
+- HTML Reporting
+- Screenshot Capture on Failure
+- Video Recording on Failure
+- Trace Viewer for Debugging
 
 ## Test Scenarios Covered
+
+### Positive Scenarios
 - Valid Login
-- Invalid Login
-- Locked User Login
-- Add to Cart
+- Add Product to Cart
 - Checkout Flow
 - Logout Flow
 
+### Negative Scenarios
+- Locked User Login
+- Invalid Username
+- Invalid Password
+- Empty Credentials
+
 ## Project Structure
---text
-pages/
-tests/
-fixtures/
-test-data/
-playwright.config.ts
+
+project-root/
+│
+├── pages/
+├── tests/
+├── fixtures/
+├── test-data/
+├── playwright.config.ts
+├── package.json
+└── README.md
+
+
