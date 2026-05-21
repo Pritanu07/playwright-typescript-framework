@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test';
-
 import { LoginPage } from '../pages/LoginPage';
-
 import loginData from '../test-data/loginData.json';
 
 test('Valid Login Test', async ({ page }) => {
@@ -15,8 +13,7 @@ test('Valid Login Test', async ({ page }) => {
     loginData.validUser.password
   );
 
-  await page.waitForTimeout(5000);
-
   await expect(page).toHaveURL(/inventory/);
-  await page.waitForTimeout(2000);
+
+  console.log('✅ Login test passed');
 });

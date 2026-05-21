@@ -1,5 +1,5 @@
-import { type Page, type Locator, expect } from '@playwright/test';
-//import { test, expect } from '../fixtures/baseTest';
+import { type Page, type Locator } from '@playwright/test';
+import { test, expect } from '../fixtures/baseTest';
 export class CartPage {
 
   readonly page: Page;

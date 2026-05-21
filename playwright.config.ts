@@ -2,43 +2,28 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
 
-  testDir: './tests',
+  testDir: './',
 
-  // Run tests in parallel
   fullyParallel: true,
 
-  // Prevent accidental test.only in CI
   forbidOnly: !!process.env.CI,
 
-  // Retry failed tests in CI
-  retries: process.env.CI ? 2 : 1,
+  retries: process.env.CI ? 2 : 0,
 
-  // Workers
-  workers: process.env.CI ? 1 : 1,
+  workers: process.env.CI ? 1 : undefined,
 
-  // Reporters
   reporter: [
     ['html'],
     ['list']
   ],
 
-  // Shared settings
   use: {
-
-    // Browser actions
     headless: false,
-
-    // Trace
-    trace: 'on-first-retry',
-
-    // Screenshot on failure
+    trace: 'on',
     screenshot: 'only-on-failure',
-
-    // Video on failure
     video: 'retain-on-failure',
   },
 
-  // Browser projects
   projects: [
 
     {
@@ -46,6 +31,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
       },
+      testIgnore: ['API/**/*'],
     },
 
     {
@@ -53,6 +39,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Firefox'],
       },
+      testIgnore: ['API/**/*'],
     },
 
     {
@@ -60,6 +47,12 @@ export default defineConfig({
       use: {
         ...devices['Desktop Safari'],
       },
+      testIgnore: ['API/**/*'],
+    },
+
+    {
+      name: 'api',
+      testMatch: ['API/**/*.spec.ts'],
     },
 
   ],
