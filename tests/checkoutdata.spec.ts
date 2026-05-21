@@ -3,11 +3,10 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { InventoryPage } from '../pages/InventoryPage';
 import { CartPage } from '../pages/cartpage';
-import { CheckoutPage } from '../pages/checkoutpage';
+import { CheckoutPage } from '../pages/CheckoutPage';
 
 import loginData from '../test-data/loginData.json';
-import checkoutData from '../test-data/checkoutData.json';
-
+import checkoutData from '../test-data/checkoutdata.json';
 test.setTimeout(60000);
 
 test('Complete checkout flow successfully', async ({ page }) => {
