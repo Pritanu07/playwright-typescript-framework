@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { InventoryPage } from '../pages/InventoryPage';
 import { CartPage } from '../pages/cartpage';
-import { CheckoutPage } from '../pages/checkoutpage';
+import { checkoutpage } from '../pages/checkoutpage';
 
 import loginData from '../test-data/loginData.json';
 import checkoutData from '../test-data/checkoutData.json';
@@ -15,7 +15,7 @@ test('Complete checkout flow successfully', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);
-  const checkoutPage = new CheckoutPage(page);
+  const checkoutpage = new checkoutpage(page);
 
   // Step 1: Launch application
   await loginPage.launch();
@@ -48,20 +48,20 @@ test('Complete checkout flow successfully', async ({ page }) => {
  await cartPage.clickCheckout();
  await expect(page).toHaveURL(/checkout-step-one/);
  await page.waitForTimeout(2000);
- await checkoutPage.enterCheckoutDetails(
+ await checkoutpage.enterCheckoutDetails(
   checkoutData.checkoutUser.firstName,
   checkoutData.checkoutUser.lastName,
   checkoutData.checkoutUser.postalCode
 );
 await page.waitForTimeout(2000);
-await checkoutPage.continueCheckout();
+await checkoutpage.continueCheckout();
 
 await expect(page).toHaveURL(/checkout-step-two/);
 await page.waitForTimeout(2000);
 
-await checkoutPage.finishOrder();
+await checkoutpage.finishOrder();
 await page.waitForTimeout(2000);
 
-await checkoutPage.verifyOrderSuccess();
+await checkoutpage.verifyOrderSuccess();
 
 });

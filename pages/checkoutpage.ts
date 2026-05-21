@@ -1,6 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-export class CheckoutPage {
+export class checkoutpage {
 
   readonly page: Page;
 
