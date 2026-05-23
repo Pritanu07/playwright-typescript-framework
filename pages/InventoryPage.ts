@@ -51,6 +51,7 @@ export class InventoryPage {
     await this.page.waitForTimeout(2000); // 👈 after click
 
     await expect(this.cartBadge).toHaveText('2');
+   
   }
 
   async verifyCartCount(count: string) {

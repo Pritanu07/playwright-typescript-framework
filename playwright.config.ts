@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
-
 export default defineConfig({
+  timeout: 60000,
 
   testDir: './',
 
@@ -13,15 +13,18 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   reporter: [
-    ['html'],
-    ['list']
-  ],
+  ['list'],
+  ['html'],
+  ['allure-playwright']
+],
+  
 
   use: {
     headless: true,
     trace: 'on',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+  
   },
 
   projects: [

@@ -53,4 +53,12 @@ project-root/
 ├── package.json
 └── README.md
 
-
+## Features
+- UI Automation using Playwright
+- API Testing
+- Cross-browser execution
+- Allure Reporting
+- GitHub Actions CI/CD
+- Screenshot, Video & Trace Capture
+- Data-driven testing using JSON
+- Page Object Model (POM)

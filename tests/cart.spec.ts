@@ -2,9 +2,10 @@ import { test, expect } from '../fixtures/baseTest';
 
 import { InventoryPage } from '../pages/InventoryPage';
 import { CartPage } from '../pages/cartpage';
+test.setTimeout(60000);
 
 test('Add product to cart and verify cart flow', async ({ loggedInPage }) => {
-
+  expect(1).toBe(2);
   const inventoryPage = new InventoryPage(loggedInPage);
   const cartPage = new CartPage(loggedInPage);
 

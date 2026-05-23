@@ -7,6 +7,7 @@ import { CheckoutPage } from '../pages/checkoutpage';
 
 import loginData from '../test-data/loginData.json';
 import checkoutData from '../test-data/checkoutdata.json';
+
 test.setTimeout(60000);
 
 test('Complete checkout flow successfully', async ({ page }) => {
