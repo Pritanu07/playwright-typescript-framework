@@ -57,13 +57,6 @@ jobs:
         run: npx playwright test
 
       # =========================
-      # GENERATE PLAYWRIGHT REPORT
-      # =========================
-      - name: Generate HTML Report
-        if: always()
-        run: npx playwright show-report --host 0.0.0.0 > /dev/null 2>&1 || true
-
-      # =========================
       # GENERATE ALLURE REPORT
       # =========================
       - name: Generate Allure Report
