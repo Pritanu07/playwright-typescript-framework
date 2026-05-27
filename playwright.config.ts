@@ -42,7 +42,7 @@ export default defineConfig({
 
     // TRUE for CI/CD
     // FALSE for local debugging
-    headless: false,
+    headless: true,
 
     screenshot: 'only-on-failure',
 
