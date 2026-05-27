@@ -1,20 +1,20 @@
-import { test as base, expect } from '@playwright/test';
+import { test as base } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
-import loginData from '../test-data/loginData.json';
+import { InventoryPage } from '../pages/InventoryPage';
+import { CartPage } from '../pages/CartPage';
 
 export const test = base.extend({
+  login: async ({ page }, use) => {
+    await use(new LoginPage(page));
+  },
 
-  loggedInPage: async ({ page }, use) => {
-  const loginPage = new LoginPage(page);
+  inventory: async ({ page }, use) => {
+    await use(new InventoryPage(page));
+  },
 
-  await loginPage.launch();
-
-  await loginPage.login(
-    loginData.validUser.username,
-    loginData.validUser.password
-  );
-
-  await use(page);
-}
+  cart: async ({ page }, use) => {
+    await use(new CartPage(page));
+  }
 });
-export { expect };
+
+export { expect } from '@playwright/test';

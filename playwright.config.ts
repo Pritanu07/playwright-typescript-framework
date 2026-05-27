@@ -1,62 +1,81 @@
 import { defineConfig, devices } from '@playwright/test';
+
 export default defineConfig({
-  timeout: 60000,
 
-  testDir: './',
+  // =========================
+  // TEST DIRECTORY
+  // =========================
+  testDir: './tests',
 
-  fullyParallel: true,
+  // =========================
+  // TIMEOUTS
+  // =========================
+  timeout: 60 * 1000,
 
-  forbidOnly: !!process.env.CI,
-
-  retries: process.env.CI ? 2 : 0,
-
-  workers: process.env.CI ? 1 : undefined,
-
-  reporter: [
-  ['list'],
-  ['html'],
-  ['allure-playwright']
-],
-  
-
-  use: {
-    headless: true,
-    trace: 'on',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-  
+  expect: {
+    timeout: 10 * 1000,
   },
 
+  // =========================
+  // EXECUTION SETTINGS
+  // =========================
+  fullyParallel: true,
+
+  retries: 1,
+
+  workers: 2,
+
+  // =========================
+  // REPORTERS
+  // =========================
+  reporter: [
+    ['list'],
+    ['html'],
+    ['allure-playwright'],
+  ],
+
+  // =========================
+  // SHARED SETTINGS
+  // =========================
+  use: {
+    baseURL: 'https://www.saucedemo.com',
+
+    // TRUE for CI/CD
+    // FALSE for local debugging
+    headless: false,
+
+    screenshot: 'only-on-failure',
+
+    video: 'retain-on-failure',
+
+    trace: 'retain-on-failure',
+
+    launchOptions: {
+      slowMo: 500,
+    },
+  },
+
+  // =========================
+  // PROJECTS
+  // =========================
   projects: [
 
     {
-      name: 'chromium',
+      name: 'smoke',
+      testMatch: /.*smoke.*\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
       },
-      testIgnore: ['API/**/*'],
     },
 
     {
-      name: 'firefox',
+      name: 'regression',
+      testMatch: /.*regression.*\.spec\.ts/,
       use: {
-        ...devices['Desktop Firefox'],
+        ...devices['Desktop Chrome'],
       },
-      testIgnore: ['API/**/*'],
-    },
-
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-      },
-      testIgnore: ['API/**/*'],
-    },
-
-    {
-      name: 'api',
-      testMatch: ['API/**/*.spec.ts'],
     },
 
   ],
+
 });

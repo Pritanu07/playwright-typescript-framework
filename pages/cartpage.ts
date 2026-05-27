@@ -1,42 +1,39 @@
-import { type Page, type Locator } from '@playwright/test';
-import { test, expect } from '../fixtures/baseTest';
+import { expect, Page } from '@playwright/test';
+
 export class CartPage {
+  constructor(private page: Page) {}
 
-  readonly page: Page;
-  readonly cartItemName: Locator;
-  readonly cartItemContainer: Locator;
-  readonly checkoutButton: Locator;
-
-  constructor(page: Page) {
-
-    this.page = page;
-
-    // All product names inside cart
-    this.cartItemName =
-        page.locator('[data-test="inventory-item-name"]');
-
-    // Optional: whole cart item container
-    this.cartItemContainer =
-      page.locator('.cart_item');
-    this.checkoutButton =
-      page.locator('#checkout');
+  async verifyCartPageIsDisplayed() {
+    await expect(this.page.locator('.title')).toHaveText('Your Cart');
   }
 
-  async verifyBackpackVisible() {
-  await expect(this.cartItemName)
-    .toContainText(['Sauce Labs Backpack']);
-}
+  async checkout() {
+    await this.page.click('#checkout');
 
-async verifyBikeLightVisible() {
-  await expect(this.cartItemName)
-    .toContainText(['Sauce Labs Bike Light']);
-}
-  async verifyCartHasItems(count: number = 2) {
-
-    await expect(this.cartItemContainer).toHaveCount(count);
+    await expect(this.page.locator('.title'))
+      .toHaveText('Checkout: Your Information');
   }
-  async clickCheckout() {
 
-    await this.checkoutButton.click();
+  async fillCustomerDetails(first: string, last: string, zip: string) {
+    await this.page.fill('#first-name', first);
+    await this.page.fill('#last-name', last);
+    await this.page.fill('#postal-code', zip);
+
+    await this.page.click('#continue');
+  }
+
+  async verifyOverviewPage() {
+    await expect(this.page.locator('.title'))
+      .toHaveText('Checkout: Overview');
+
+    await expect(this.page.locator('.summary_total_label'))
+      .toBeVisible();
+  }
+
+  async finishOrder() {
+    await this.page.click('#finish');
+
+    await expect(this.page.locator('.complete-header'))
+      .toHaveText('Thank you for your order!');
+  }
 }
-};

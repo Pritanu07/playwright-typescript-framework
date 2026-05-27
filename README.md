@@ -1,64 +1,92 @@
-# Playwright SauceDemo Automation Framework
+# 🧪 Playwright POM + API + Hybrid Automation Framework
 
-## Overview
-This project is an end-to-end UI automation framework developed using Playwright with TypeScript following the Page Object Model (POM) design pattern.
+## 🚀 Overview
+This is a **full enterprise-level automation framework** built using Playwright with TypeScript.  
+It supports:
 
-The framework automates core SauceDemo functionalities including:
-- Login
-- Negative Login Validation
-- Add to Cart
-- Checkout Flow
-- Logout Flow
+- UI Automation (POM Design Pattern)
+- API Automation (Request Layer)
+- Hybrid UI + API Testing
+- Fixtures (Custom Playwright Setup)
+- Data-Driven Testing
+- CI/CD Integration (GitHub Actions)
+- Allure Reporting
+- Screenshots & Video capture
 
-The framework is designed with reusable components, fixtures, data-driven testing, and scalable test architecture.
+---
 
-## Tech Stack
+## 🏗️ Architecture
+POM-saucedemo/
+│
+├── tests/
+│   ├── smoke/
+│   │   ├── login.smoke.spec.ts
+│   │   ├── cart.smoke.spec.ts
+│   │
+│   ├── regression/
+│   │   ├── full.regression.spec.ts
+│   │   ├── e2e.regression.spec.ts
+│   │
+│   ├── api/
+│   │   ├── login.api.spec.ts
+│   │   ├── users.api.spec.ts
+│
+├── pages/
+│   ├── LoginPage.ts
+│   ├── InventoryPage.ts
+│   ├── CartPage.ts
+│
+├── fixtures/
+│   └── baseTest.ts
+│
+├── api/
+│   ├── utils/
+│   ├── data/
+│
+├── playwright.config.ts
+├── package.json
+├── run-all-tests.js
+└── allure-results/
+
+---
+
+## ⚙️ Tech Stack
+
 - Playwright
 - TypeScript
 - Node.js
+- POM Design Pattern
+- API Testing (Playwright Request)
+- GitHub Actions
+- Allure Reports
 
-## Framework Features
-- Page Object Model (POM)
-- Reusable Fixtures
-- Data-Driven Testing using JSON
-- Cross-Browser Execution
-- HTML Reporting
-- Screenshot Capture on Failure
-- Video Recording on Failure
-- Trace Viewer for Debugging
+---
 
-## Test Scenarios Covered
+## 🧪 Test Types Covered
 
-### Positive Scenarios
-- Valid Login
-- Add Product to Cart
-- Checkout Flow
-- Logout Flow
+### ✔ UI Automation
+- Login
+- Product selection
+- Cart validation
+- Checkout flow
+- Logout
 
-### Negative Scenarios
-- Locked User Login
-- Invalid Username
-- Invalid Password
-- Empty Credentials
+### ✔ Negative Testing
+- Invalid login
+- Locked user
+- Empty fields validation
 
-## Project Structure
+### ✔ API Testing
+- User creation (POST)
+- API response validation
 
-project-root/
-│
-├── pages/
-├── tests/
-├── fixtures/
-├── test-data/
-├── playwright.config.ts
-├── package.json
-└── README.md
+### ✔ Hybrid Testing
+- UI + API combined validation flow
 
-## Features
-- UI Automation using Playwright
-- API Testing
-- Cross-browser execution
-- Allure Reporting
-- GitHub Actions CI/CD
-- Screenshot, Video & Trace Capture
-- Data-driven testing using JSON
-- Page Object Model (POM)
+---
+
+## ▶️ How to Run Tests
+
+### Run all tests
+```bash
+npx playwright test

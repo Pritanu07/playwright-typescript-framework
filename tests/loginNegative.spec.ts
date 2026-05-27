@@ -1,93 +1,63 @@
-import { test, expect } from '@playwright/test';
-
+import { test, expect } from '../fixtures/baseTest';
 import { LoginPage } from '../pages/LoginPage';
+import { loginData } from '../api/data/login.data';
 
-import loginData from '../test-data/loginData.json';
+test.describe('Login Negative Scenarios', () => {
 
+  test('Locked out user should not login', async ({ page }) => {
 
-// LOCKED USER TEST
-test('Login with locked out user', async ({ page }) => {
+    const login = new LoginPage(page);
 
-  const loginPage = new LoginPage(page);
+    await login.goto();
 
-  await loginPage.launch();
+    await login.login(
+      loginData.lockedUser.username,
+      loginData.lockedUser.password
+    );
 
-  await loginPage.login(
-    loginData.lockedUser.username,
-    loginData.lockedUser.password
-  );
+    await login.verifyLoginFailed();
+  });
 
-  await expect(
-    page.locator('[data-test="error"]')
-  ).toContainText(
-    'Sorry, this user has been locked out.'
-  );
+  test('Invalid password should not login', async ({ page }) => {
 
-  await page.waitForTimeout(2000);
-});
+    const login = new LoginPage(page);
 
+    await login.goto();
 
-// WRONG USERNAME TEST
-test('Login with wrong username', async ({ page }) => {
+    await login.login(
+      loginData.invalidUser.username,
+      loginData.invalidUser.password
+    );
 
-  const loginPage = new LoginPage(page);
+    await login.verifyLoginErrorMessage('Username and password do not match');
+  });
 
-  await loginPage.launch();
+  test('Empty username should show validation error', async ({ page }) => {
 
-  await loginPage.login(
-    loginData.wrongUsername.username,
-    loginData.wrongUsername.password
-  );
+    const login = new LoginPage(page);
 
-  await expect(
-    page.locator('[data-test="error"]')
-  ).toContainText(
-    'Username and password do not match'
-  );
+    await login.goto();
 
-  await page.waitForTimeout(2000);
-});
+    await login.login(
+      loginData.emptyUser.username,
+      loginData.emptyUser.password
+    );
 
+    await login.verifyLoginErrorMessage('Username is required');
+  });
 
-// WRONG PASSWORD TEST
-test('Login with wrong password', async ({ page }) => {
+  test('Empty password should show validation error', async ({ page }) => {
 
-  const loginPage = new LoginPage(page);
+    const login = new LoginPage(page);
 
-  await loginPage.launch();
+    await login.goto();
 
-  await loginPage.login(
-    loginData.wrongPassword.username,
-    loginData.wrongPassword.password
-  );
+    await login.login(
+      loginData.validUser.username,
+      ''
+    );
 
-  await expect(
-    page.locator('[data-test="error"]')
-  ).toContainText(
-    'Username and password do not match'
-  );
+    await login.verifyLoginErrorMessage('Password is required');
+  });
 
-  await page.waitForTimeout(2000);
-});
-
-
-// EMPTY CREDENTIALS TEST
-test('Login with empty credentials', async ({ page }) => {
-
-  const loginPage = new LoginPage(page);
-
-  await loginPage.launch();
-
-  await loginPage.login(
-    loginData.emptyCredentials.username,
-    loginData.emptyCredentials.password
-  );
-
-  await expect(
-    page.locator('[data-test="error"]')
-  ).toContainText(
-    'Username is required'
-  );
-
-  await page.waitForTimeout(2000);
 });

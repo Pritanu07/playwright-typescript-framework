@@ -1,46 +1,24 @@
-import { type Page, type Locator, expect } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export class MenuPage {
+  constructor(private page: Page) {}
 
-  readonly page: Page;
-
-  readonly menuButton: Locator;
-  readonly logoutLink: Locator;
-
-  constructor(page: Page) {
-
-    this.page = page;
-
-    this.menuButton =
-      page.locator('#react-burger-menu-btn');
-
-    this.logoutLink =
-      page.locator('#logout_sidebar_link');
-  }
+  private menuButton = '#react-burger-menu-btn';
+  private logoutLink = '#logout_sidebar_link';
 
   async openMenu() {
-
-    await expect(this.menuButton)
-      .toBeVisible();
-
-    await this.menuButton.click();
+    await expect(this.page.locator(this.menuButton)).toBeVisible();
+    await this.page.click(this.menuButton);
   }
 
   async logout() {
-
-    await expect(this.logoutLink)
-      .toBeVisible();
-
-    await this.logoutLink.click();
+    await this.openMenu();
+    await expect(this.page.locator(this.logoutLink)).toBeVisible();
+    await this.page.click(this.logoutLink);
   }
 
-  async verifyLogoutSuccess() {
-
-    await expect(this.page)
-      .toHaveURL(/saucedemo/);
-
-    await expect(
-      this.page.locator('#login-button')
-    ).toBeVisible();
+  async verifyLoggedOut() {
+    await expect(this.page).toHaveURL(/saucedemo/);
+    await expect(this.page.locator('#login-button')).toBeVisible();
   }
 }

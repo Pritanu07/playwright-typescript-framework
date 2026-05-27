@@ -1,19 +1,19 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import loginData from '../test-data/loginData.json';
+import { expect, Page } from '@playwright/test';
 
-test('Valid Login Test', async ({ page }) => {
+export class LoginPage {
+  constructor(private page: Page) {}
 
-  const loginPage = new LoginPage(page);
+  async goto() {
+    await this.page.goto('/');
+  }
 
-  await loginPage.launch();
+  async login(username: string, password: string) {
+    await this.page.fill('#user-name', username);
+    await this.page.fill('#password', password);
+    await this.page.click('#login-button');
+  }
 
-  await loginPage.login(
-    loginData.validUser.username,
-    loginData.validUser.password
-  );
-
-  await expect(page).toHaveURL(/inventory/);
-
-  console.log('✅ Login test passed');
-});
+  async verifyLoginSuccess() {
+    await expect(this.page.locator('.title')).toHaveText('Products');
+  }
+}

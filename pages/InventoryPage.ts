@@ -1,68 +1,51 @@
-import { type Page, type Locator, expect } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 
 export class InventoryPage {
 
-  readonly page: Page;
-  readonly addBackpackButton: Locator;
-  readonly addBikeLightButton: Locator;
-  readonly cartBadge: Locator;
-  readonly cartIcon: Locator;
+  constructor(private page: Page) {}
 
-  constructor(page: Page) {
-
-    this.page = page;
-
-    this.addBackpackButton =
-      page.locator('#add-to-cart-sauce-labs-backpack');
-
-    this.addBikeLightButton =
-      page.locator('#add-to-cart-sauce-labs-bike-light');
-
-    this.cartBadge =
-      page.locator('.shopping_cart_badge');
-
-    this.cartIcon =
-      page.locator('.shopping_cart_link');
+  // =========================
+  // VERIFY INVENTORY PAGE
+  // =========================
+  async verifyInventoryPageIsDisplayed() {
+    await expect(this.page.locator('.title'))
+      .toHaveText('Products');
   }
 
-  async addBackpackToCart() {
+  // =========================
+  // ADD PRODUCT TO CART
+  // =========================
+  async addProduct(productId: string) {
+    const productLocator = this.page.locator(
+      `[data-test="add-to-cart-${productId}"]`
+    );
 
-    console.log('Adding Backpack to cart');
-
-    await expect(this.addBackpackButton).toBeVisible();
-
-    await this.page.waitForTimeout(2000); // 👈 pause before click
-
-    await this.addBackpackButton.click();
-
-    await this.page.waitForTimeout(2000); // 👈 pause after click
+    await expect(productLocator).toBeVisible();
+    await productLocator.click();
   }
 
-  async addBikeLightToCart() {
+  // =========================
+  // VERIFY CART BADGE COUNT
+  // =========================
+  async verifyCartBadgeCount(expectedCount: number) {
+    const badge = this.page.locator('.shopping_cart_badge');
 
-    console.log('Adding Bike Light to cart');
+    await expect(badge)
+      .toBeVisible();
 
-    await expect(this.addBikeLightButton).toBeVisible();
-
-    await this.page.waitForTimeout(2000); // 👈 before click
-
-    await this.addBikeLightButton.click();
-
-    await this.page.waitForTimeout(2000); // 👈 after click
-
-    await expect(this.cartBadge).toHaveText('2');
-   
+    await expect(badge)
+      .toHaveText(String(expectedCount));
   }
 
-  async verifyCartCount(count: string) {
+  // =========================
+  // NAVIGATE TO CART
+  // =========================
+  async goToCart() {
+    const cartIcon = this.page.locator('.shopping_cart_link');
 
-    await expect(this.cartBadge).toHaveText(count);
-  }
+    await expect(cartIcon).toBeVisible();
+    await cartIcon.click();
 
-  async openCart() {
-
-    await this.page.waitForTimeout(2000); // 👈 before navigation
-
-    await this.cartIcon.click();
+    await expect(this.page).toHaveURL(/cart/);
   }
 }

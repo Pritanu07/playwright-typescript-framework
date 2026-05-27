@@ -1,38 +1,21 @@
-import { type Page, type Locator, expect } from "@playwright/test";
+import { expect, Page } from '@playwright/test';
 
 export class LoginPage {
+  constructor(private page: Page) {}
 
-  readonly page: Page;
-  readonly usernameInput: Locator;
-  readonly passwordInput: Locator;
-  readonly loginButton: Locator;
-
-  constructor(page: Page) {
-    this.page = page;
-
-    this.usernameInput = page.locator('#user-name');
-    this.passwordInput = page.locator('#password');
-    this.loginButton = page.locator('#login-button');
-  }
-
-  async launch() {
-    await this.page.goto('https://www.saucedemo.com/');
-
-    // ensure page is loaded properly
-    await expect(this.usernameInput).toBeVisible();
+  async goto() {
+    await this.page.goto('https://www.saucedemo.com');
   }
 
   async login(username: string, password: string) {
+    await this.page.fill('#user-name', username);
+    await this.page.fill('#password', password);
+    await this.page.click('#login-button');
 
-    await this.usernameInput.fill(username);
-    await this.page.waitForTimeout(3000);
-    await this.passwordInput.fill(password);
-    await this.page.waitForTimeout(3000);
+    await expect(this.page.locator('.title')).toHaveText('Products');
+  }
 
-    await this.loginButton.click();
-    await this.page.waitForTimeout(3000);
-
-    // IMPORTANT: verify login success
-    //await expect(this.page.locator('.inventory_list')).toBeVisible();
+  async verifyLoginSuccess() {
+    await expect(this.page.locator('.title')).toHaveText('Products');
   }
 }

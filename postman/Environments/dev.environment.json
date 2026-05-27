@@ -1,0 +1,11 @@
+{
+  "name": "dev environment",
+  "_postman_variable_scope": "environments",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://reqres.in/api",
+      "enabled": true
+    }
+  ]
+}

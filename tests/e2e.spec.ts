@@ -1,6 +1,6 @@
 import { test } from '../fixtures/baseTest';
 
-test('Add product to cart and verify cart flow', async ({ login, inventory, cart }) => {
+test('e2e Full purchase journey', async ({ login, inventory, cart }) => {
 
   await login.goto();
   await login.login('standard_user', 'secret_sauce');
