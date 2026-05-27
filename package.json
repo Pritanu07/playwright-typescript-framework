@@ -12,6 +12,8 @@
     "install:browsers": "playwright install",
     "report:allure": "allure generate allure-results --clean -o allure-report",
     "open:allure": "allure open allure-report",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
     "postman:test": "node postman/scripts/run-postman.js"
   },
   "devDependencies": {
