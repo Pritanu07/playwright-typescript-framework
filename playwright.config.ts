@@ -1,81 +1,23 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-
-  // =========================
-  // TEST DIRECTORY
-  // =========================
   testDir: './tests',
 
-  // =========================
-  // TIMEOUTS
-  // =========================
-  timeout: 60 * 1000,
-
-  expect: {
-    timeout: 10 * 1000,
-  },
-
-  // =========================
-  // EXECUTION SETTINGS
-  // =========================
-  fullyParallel: true,
-
-  retries: 1,
-
-  workers: 2,
-
-  // =========================
-  // REPORTERS
-  // =========================
   reporter: [
     ['list'],
     ['html'],
-    ['allure-playwright'],
+    ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
 
-  // =========================
-  // SHARED SETTINGS
-  // =========================
   use: {
-    baseURL: 'https://www.saucedemo.com',
-
-    // TRUE for CI/CD
-    // FALSE for local debugging
-    headless: true,
-
+    trace: 'on-first-retry',   // important for debugging
     screenshot: 'only-on-failure',
-
     video: 'retain-on-failure',
-
-    trace: 'retain-on-failure',
-
-    launchOptions: {
-      slowMo: 500,
-    },
   },
 
-  // =========================
-  // PROJECTS
-  // =========================
-  projects: [
+  outputDir: 'test-results',
 
-    {
-      name: 'smoke',
-      testMatch: /.*smoke.*\.spec\.ts/,
-      use: {
-        ...devices['Desktop Chrome'],
-      },
-    },
+  retries: 1,
 
-    {
-      name: 'regression',
-      testMatch: /.*regression.*\.spec\.ts/,
-      use: {
-        ...devices['Desktop Chrome'],
-      },
-    },
-
-  ],
-
+  timeout: 30000,
 });
