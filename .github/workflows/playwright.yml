@@ -49,6 +49,8 @@ jobs:
       # =========================
       - name: Run Playwright Tests
         run: npx playwright test
+      - name: Ensure report exists
+        run: test -d playwright-report || mkdir playwright-report
 
       # =========================
       # Debug Report Folder (IMPORTANT)
@@ -82,9 +84,10 @@ jobs:
       # =========================
       # Deploy Report to GitHub Pages
       # =========================
-      - name: Deploy Playwright Report to GitHub Pages
+      - name: Deploy to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: playwright-report
+          force_orphan: true
