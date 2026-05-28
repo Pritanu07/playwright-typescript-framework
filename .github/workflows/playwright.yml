@@ -9,7 +9,7 @@
   uses: actions/upload-artifact@v4
   with:
     name: playwright-report
-    path: playwright-report/
+    path: playwright-report/t 
 
 - name: Deploy to GitHub Pages
   if: always()
