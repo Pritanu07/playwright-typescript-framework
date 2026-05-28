@@ -10,13 +10,25 @@ export class CheckoutService {
     private checkout: CheckoutPage
   ) {}
 
-  async completePurchase(productId: string) {
-    await this.inventory.addToCart(productId);
-    await this.inventory.openCart();
+  async completePurchase(productIds: string[]) {
 
-    await this.cart.verifyCartPage();
-    await this.cart.checkout();
+    // =========================
+    // ADD PRODUCTS
+    // =========================
+    for (const productId of productIds) {
+      await this.inventory.addProduct(productId);
+    }
 
+    // =========================
+    // CART FLOW
+    // =========================
+    await this.inventory.goToCart();
+    await this.cart.verifyCartPageIsDisplayed();
+    await this.cart.proceedToCheckout();
+
+    // =========================
+    // CHECKOUT FLOW
+    // =========================
     await this.checkout.fillDetails('Test', 'User', '12345');
     await this.checkout.finishOrder();
     await this.checkout.verifySuccess();

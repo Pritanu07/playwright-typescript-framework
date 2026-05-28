@@ -1,47 +1,30 @@
 import { test, expect } from '../fixtures/baseTest';
-import { productsData } from '../api/data/products.data';
+import { ApiClient } from '../api/client/apiclient';
 
-test('integration Hybrid UI + Mock Flow', async ({ page, login, inventory, cart }) => {
+test('UI + API integration flow', async ({ page, login, api }) => {
 
-  // =========================
-  // MOCK API
-  // =========================
-  await page.route('**/api/products', async (route) => {
-    await route.fulfill({
-      status: 200,
-      body: JSON.stringify({ products: [] })
-    });
-  });
+  // =====================
+  // API LAYER FIRST
+  // =====================
+  const apiResponse = await api.login();
+  expect(apiResponse.token).toBeDefined();
 
-  // =========================
-  // LOGIN FLOW
-  // =========================
-  await login.goto();
-  await login.login('standard_user', 'secret_sauce');
-
-  // =========================
+  // =====================
   // UI FLOW
-  // =========================
-  await expect(page.locator('.title')).toHaveText('Products');
+  // =====================
+   await login.goto();
+   await login.login('standard_user', 'secret_sauce');
+   await page.waitForTimeout(2000); // small buffer
+   await page.pause();
 
-  const product = productsData[0];
+  const title = page.locator('.title');
+  await expect(title).toBeVisible();
+  await expect(title).toHaveText('Products');
 
-  await page.click(`[data-test="add-to-cart-${product.id}"]`);
+  // Debug (remove later)
+  // await page.pause();
 
-  await page.click('.shopping_cart_link');
-
-  // =========================
-  // CART + CHECKOUT FLOW
-  // =========================
-  await page.click('#checkout');
-
-  await page.fill('#first-name', 'Test');
-  await page.fill('#last-name', 'User');
-  await page.fill('#postal-code', '12345');
-
-  await page.click('#continue');
-  await page.click('#finish');
-
-  await expect(page.locator('.complete-header'))
-    .toHaveText('Thank you for your order!');
+  // API users
+  const users = await api.getUsers();
+  expect(users.data.length).toBeGreaterThan(0);
 });

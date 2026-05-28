@@ -1,39 +1,71 @@
 import { expect, Page } from '@playwright/test';
 
 export class CartPage {
+
   constructor(private page: Page) {}
 
+  // =========================
+  // NAVIGATE TO CART
+  // =========================
+  async goToCart() {
+    const cartIcon = this.page.locator('.shopping_cart_link');
+
+    await expect(cartIcon).toBeVisible({ timeout: 15000 });
+    await cartIcon.click();
+
+    // 🔥 stable cart load validation
+    await expect(this.page.locator('.cart_list'))
+      .toBeVisible({ timeout: 15000 });
+  }
+
+  // =========================
+  // VERIFY CART PAGE
+  // =========================
+  async verifyCartPage() {
+
+    const title = this.page.locator('.title');
+
+    await expect(title).toBeVisible({ timeout: 15000 });
+    await expect(title).toHaveText('Your Cart');
+  }
+
+  // =========================
+  // VERIFY PRODUCT IN CART
+  // =========================
+  async verifyProductInCart(productName: string) {
+
+    const product = this.page.locator('.cart_item', {
+      hasText: productName
+    });
+
+    await expect(product).toBeVisible({ timeout: 15000 });
+  }
+
   async verifyCartPageIsDisplayed() {
-    await expect(this.page.locator('.title')).toHaveText('Your Cart');
+  await this.verifyCartPage();
+ }
+
+  // =========================
+  // REMOVE PRODUCT
+  // =========================
+  async removeProduct(productId: string) {
+
+    const removeBtn = this.page.locator(
+      `[data-test="remove-${productId}"]`
+    );
+
+    await expect(removeBtn).toBeVisible({ timeout: 15000 });
+    await removeBtn.click();
   }
 
-  async checkout() {
-    await this.page.click('#checkout');
+  // =========================
+  // PROCEED TO CHECKOUT
+  // =========================
+  async proceedToCheckout() {
 
-    await expect(this.page.locator('.title'))
-      .toHaveText('Checkout: Your Information');
-  }
+    const checkoutBtn = this.page.locator('#checkout');
 
-  async fillCustomerDetails(first: string, last: string, zip: string) {
-    await this.page.fill('#first-name', first);
-    await this.page.fill('#last-name', last);
-    await this.page.fill('#postal-code', zip);
-
-    await this.page.click('#continue');
-  }
-
-  async verifyOverviewPage() {
-    await expect(this.page.locator('.title'))
-      .toHaveText('Checkout: Overview');
-
-    await expect(this.page.locator('.summary_total_label'))
-      .toBeVisible();
-  }
-
-  async finishOrder() {
-    await this.page.click('#finish');
-
-    await expect(this.page.locator('.complete-header'))
-      .toHaveText('Thank you for your order!');
+    await expect(checkoutBtn).toBeVisible({ timeout: 15000 });
+    await checkoutBtn.click();
   }
 }

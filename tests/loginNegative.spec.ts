@@ -1,11 +1,10 @@
-import { test, expect } from '../fixtures/baseTest';
+import { test } from '../fixtures/baseTest';
 import { LoginPage } from '../pages/LoginPage';
 import { loginData } from '../api/data/login.data';
 
 test.describe('Login Negative Scenarios', () => {
 
   test('Locked out user should not login', async ({ page }) => {
-
     const login = new LoginPage(page);
 
     await login.goto();
@@ -15,11 +14,10 @@ test.describe('Login Negative Scenarios', () => {
       loginData.lockedUser.password
     );
 
-    await login.verifyLoginFailed();
+    await login.verifyLoginErrorMessage('Sorry, this user has been locked out');
   });
 
   test('Invalid password should not login', async ({ page }) => {
-
     const login = new LoginPage(page);
 
     await login.goto();
@@ -33,21 +31,16 @@ test.describe('Login Negative Scenarios', () => {
   });
 
   test('Empty username should show validation error', async ({ page }) => {
-
     const login = new LoginPage(page);
 
     await login.goto();
 
-    await login.login(
-      loginData.emptyUser.username,
-      loginData.emptyUser.password
-    );
+    await login.login('', loginData.emptyUser.password);
 
     await login.verifyLoginErrorMessage('Username is required');
   });
 
   test('Empty password should show validation error', async ({ page }) => {
-
     const login = new LoginPage(page);
 
     await login.goto();

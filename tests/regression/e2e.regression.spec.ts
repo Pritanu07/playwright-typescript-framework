@@ -1,13 +1,17 @@
-import { test, expect } from '../../fixtures/baseTest';
+import { test } from '../../fixtures/baseTest';
+import { CheckoutPage } from '../../pages/CheckoutPage';
 
-test('@regression Full E2E purchase - multiple products', async ({ login, inventory, cart }) => {
+test('@regression Full E2E purchase - multiple products', async ({
+  login,
+  inventory,
+  cart
+}) => {
 
   // =========================
   // LOGIN
   // =========================
   await login.goto();
   await login.login('standard_user', 'secret_sauce');
-
   await login.verifyLoginSuccess();
 
   // =========================
@@ -22,14 +26,16 @@ test('@regression Full E2E purchase - multiple products', async ({ login, invent
   // CART FLOW
   // =========================
   await inventory.goToCart();
+  await cart.verifyCartPage();
 
-  await cart.verifyCartPageIsDisplayed();
+  await cart.proceedToCheckout();
 
-  await cart.checkout();
+  // =========================
+  // CHECKOUT FLOW (FIXED ARCHITECTURE)
+  // =========================
+  const checkout = new CheckoutPage(cart['page']);
 
-  await cart.fillCustomerDetails('John', 'Doe', '12345');
-
-  await cart.verifyOverviewPage();
-
-  await cart.finishOrder();
+  await checkout.fillDetails('John', 'Doe', '12345');
+  await checkout.finishOrder();
+  await checkout.verifySuccess();
 });

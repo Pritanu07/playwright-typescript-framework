@@ -5,6 +5,14 @@
     "description": "Working API tests for Postman + Newman",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://reqres.in/api"
+    }
+  ],
+
   "item": [
     {
       "name": "Login API",
@@ -35,11 +43,11 @@
               "    pm.response.to.have.status(200);",
               "});",
               "",
-              "var jsonData = pm.response.json();",
+              "const jsonData = pm.response.json();",
               "",
-              "// ReqRes returns token",
               "pm.test('Token exists', function () {",
               "    pm.expect(jsonData.token).to.exist;",
+              "    pm.expect(jsonData.token).to.be.a('string');",
               "});",
               "",
               "pm.environment.set('token', jsonData.token);"
@@ -48,11 +56,11 @@
         }
       ]
     },
+
     {
       "name": "Get Users",
       "request": {
         "method": "GET",
-        "header": [],
         "url": {
           "raw": "{{baseUrl}}/users?page=2",
           "host": ["{{baseUrl}}"],
@@ -74,9 +82,14 @@
               "    pm.response.to.have.status(200);",
               "});",
               "",
-              "var jsonData = pm.response.json();",
+              "const jsonData = pm.response.json();",
               "",
-              "pm.test('Response has data', function () {",
+              "pm.test('Response structure valid', function () {",
+              "    pm.expect(jsonData).to.have.property('data');",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "});",
+              "",
+              "pm.test('Data not empty', function () {",
               "    pm.expect(jsonData.data.length).to.be.greaterThan(0);",
               "});"
             ]
