@@ -5,7 +5,7 @@ export default defineConfig({
 
   reporter: [
     ['list'],
-    ['html'],
+    ['html', { outputFolder: 'playwright-report', open: 'never' }]
    // ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
 
