@@ -7,10 +7,11 @@ export class CheckoutService {
   constructor(
     private inventory: InventoryPage,
     private cart: CartPage,
-    private checkout: CheckoutPage
+    private checkout: CheckoutPage,
   ) {}
 
   async completePurchase(productIds: string[]) {
+
 
     // =========================
     // ADD PRODUCTS

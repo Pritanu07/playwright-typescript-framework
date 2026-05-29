@@ -2,6 +2,7 @@ import { test } from '../../fixtures/baseTest';
 import { CheckoutPage } from '../../pages/checkout.page';
 
 test('@regression Checkout flow - single product', async ({
+  page,
   login,
   inventory,
   cart
@@ -32,7 +33,7 @@ test('@regression Checkout flow - single product', async ({
   // =========================
   // CHECKOUT (PROPER LAYER)
   // =========================
-  const checkout = new CheckoutPage(cart['page']);
+  const checkout = new CheckoutPage(page);
 
   await checkout.fillDetails('John', 'Doe', '12345');
   await checkout.finishOrder();

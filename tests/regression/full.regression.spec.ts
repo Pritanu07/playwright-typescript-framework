@@ -1,10 +1,10 @@
 import { test } from '../../fixtures/baseTest';
-import { CheckoutPage } from '../../pages/checkout.page';
 
 test('@regression Full checkout validation', async ({
   login,
   inventory,
-  cart
+  cart,
+  checkout
 }) => {
 
   // =========================
@@ -30,10 +30,8 @@ test('@regression Full checkout validation', async ({
   await cart.proceedToCheckout();
 
   // =========================
-  // CHECKOUT FLOW (FIXED)
+  // CHECKOUT FLOW
   // =========================
-  const checkout = new CheckoutPage(cart['page']);
-
   await checkout.fillDetails('John', 'Doe', '12345');
   await checkout.finishOrder();
   await checkout.verifySuccess();

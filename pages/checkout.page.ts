@@ -1,14 +1,17 @@
 import { Page, expect } from '@playwright/test';
 
 export class CheckoutPage {
-  constructor(private page: Page) {}
+  private page: Page;
+
+  constructor(page: Page) {
+    this.page = page;
+  }
 
   // =========================
   // FILL CHECKOUT DETAILS
   // =========================
   async fillDetails(first: string, last: string, zip: string) {
 
-    // 🔥 ensure page is ready
     await expect(this.page.locator('#first-name')).toBeVisible({ timeout: 15000 });
     await expect(this.page.locator('#last-name')).toBeVisible({ timeout: 15000 });
     await expect(this.page.locator('#postal-code')).toBeVisible({ timeout: 15000 });
@@ -21,21 +24,21 @@ export class CheckoutPage {
   // =========================
   // COMPLETE ORDER FLOW
   // =========================
- async finishOrder() {
+  async finishOrder() {
 
-  const continueBtn = this.page.locator('#continue');
-  const finishBtn = this.page.locator('#finish');
+    const continueBtn = this.page.locator('#continue');
+    const finishBtn = this.page.locator('#finish');
 
-  await expect(continueBtn).toBeVisible({ timeout: 15000 });
-  await continueBtn.click();
+    await expect(continueBtn).toBeVisible({ timeout: 15000 });
+    await continueBtn.click();
 
-  await expect(finishBtn).toBeVisible({ timeout: 15000 });
-  await finishBtn.click();
+    await expect(finishBtn).toBeVisible({ timeout: 15000 });
+    await finishBtn.click();
 
-  // 🔥 IMPORTANT FIX
-  await expect(this.page.locator('.complete-header'))
-    .toBeVisible({ timeout: 15000 });
-}
+    await expect(this.page.locator('.complete-header'))
+      .toBeVisible({ timeout: 15000 });
+  }
+
   // =========================
   // VERIFY SUCCESS
   // =========================

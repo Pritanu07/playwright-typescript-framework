@@ -2,6 +2,7 @@ import { test } from '../../fixtures/baseTest';
 import { CheckoutPage } from '../../pages/checkout.page';
 
 test('@regression Full E2E purchase - multiple products', async ({
+  page,
   login,
   inventory,
   cart
@@ -31,9 +32,9 @@ test('@regression Full E2E purchase - multiple products', async ({
   await cart.proceedToCheckout();
 
   // =========================
-  // CHECKOUT FLOW (FIXED ARCHITECTURE)
+  // CHECKOUT FLOW
   // =========================
-  const checkout = new CheckoutPage(cart['page']);
+  const checkout = new CheckoutPage(page);
 
   await checkout.fillDetails('John', 'Doe', '12345');
   await checkout.finishOrder();
