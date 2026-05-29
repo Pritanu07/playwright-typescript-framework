@@ -1,80 +1,71 @@
 import { APIRequestContext, expect } from '@playwright/test';
 
 export class ApiClient {
-  constructor(private request: APIRequestContext) {
-    // ✅ DEBUG: Check if API key is loaded
-    console.log("REQRES_API_KEY =", process.env.REQRES_API_KEY);
-   
-  }
+  constructor(private request: APIRequestContext) {}
 
   private BASE_URL = 'https://reqres.in/api';
-
-  // =========================
-  // API KEY HANDLER
-  // =========================
-  private getApiKey(): string {
-    const apiKey = process.env.REQRES_API_KEY;
-
-    if (!apiKey) {
-      throw new Error(
-        'REQRES_API_KEY is missing. Add it to .env and GitHub Secrets.'
-      );
-    }
-
-    return apiKey;
-  }
-
-  // =========================
-  // COMMON HEADERS
-  // =========================
-  private getHeaders() {
-    return {
-      'Content-Type': 'application/json',
-      'x-api-key': this.getApiKey()
-    };
-  }
 
   // =========================
   // LOGIN API
   // =========================
   async login() {
     const res = await this.request.post(`${this.BASE_URL}/login`, {
-      headers: this.getHeaders(),
+      headers: {
+        'Content-Type': 'application/json'
+      },
       data: {
         email: 'eve.holt@reqres.in',
         password: 'cityslicka'
       }
     });
 
-    const body = await res.text();
+    const text = await res.text();
 
+    let body: any;
+    try {
+      body = JSON.parse(text);
+    } catch {
+      body = { raw: text };
+    }
+
+    console.log('LOGIN STATUS:', res.status());
     console.log('LOGIN RESPONSE:', body);
 
-    expect(res.ok(), body).toBeTruthy();
+    // Assert API success
+    expect(res.ok(), `Login failed: ${text}`).toBeTruthy();
 
-    return JSON.parse(body);
+    // Assert token exists
+    expect(body.token, 'Token missing in login response').toBeDefined();
+
+    return body;
   }
 
   // =========================
-  // GET USERS
+  // GET USERS API
   // =========================
   async getUsers() {
-    const res = await this.request.get(`${this.BASE_URL}/users?page=2`, {
-      headers: this.getHeaders()
-    });
+    const res = await this.request.get(`${this.BASE_URL}/users?page=2`);
 
-    const body = await res.text();
+    const text = await res.text();
 
+    let body: any;
+    try {
+      body = JSON.parse(text);
+    } catch {
+      body = { raw: text };
+    }
+
+    console.log('USERS STATUS:', res.status());
     console.log('USERS RESPONSE:', body);
 
-    expect(res.ok(), body).toBeTruthy();
+    // Assert API success
+    expect(res.ok(), `Get users failed: ${text}`).toBeTruthy();
 
-    const json = JSON.parse(body);
+    // Assert data exists
+    expect(body.data, 'Users data missing').toBeDefined();
+    expect(Array.isArray(body.data)).toBeTruthy();
+    expect(body.data.length).toBeGreaterThan(0);
 
-    expect(json.data).toBeDefined();
-    expect(Array.isArray(json.data)).toBeTruthy();
-    expect(json.data.length).toBeGreaterThan(0);
-
-    return json;
+    return body;
   }
 }
