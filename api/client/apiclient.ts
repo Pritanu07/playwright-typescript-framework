@@ -4,6 +4,7 @@ export class ApiClient {
   constructor(private request: APIRequestContext) {
     // ✅ DEBUG: Check if API key is loaded
     console.log("REQRES_API_KEY =", process.env.REQRES_API_KEY);
+    console.log("ENV CHECK:", process.env.REQRES_API_KEY);
   }
 
   private BASE_URL = 'https://reqres.in/api';

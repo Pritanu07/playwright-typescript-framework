@@ -1,21 +1,25 @@
 import dotenv from 'dotenv';
 dotenv.config();
+
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
 
+  // ✅ SINGLE use block (FIXED)
+  use: {
+    baseURL: 'https://reqres.in/api',
+
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+  },
+
   reporter: [
     ['list'],
     ['html'],
     ['allure-playwright', { outputFolder: 'allure-results' }]
-    ],
-
-  use: {
-    trace: 'on-first-retry',   // important for debugging
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-  },
+  ],
 
   outputDir: 'test-results',
 
