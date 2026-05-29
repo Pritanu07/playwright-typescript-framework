@@ -1,4 +1,5 @@
-name: Playwright Tests
+name: UI + API + Allure CI Pipeline
+
 on:
   push:
     branches: [main]
@@ -23,18 +24,51 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Generate auth state
-        run: npx ts-node auth/generateStandard.ts
-
-      - name: Run tests
-        run: npx playwright test
-
-      - name: Run tests
+      # =========================
+      # UI TESTS (PLAYWRIGHT)
+      # =========================
+      - name: Run UI Tests
         run: npm run test:ci
 
-      - name: Upload Playwright report 
+      # =========================
+      # API TESTS (POSTMAN / NEWMAN)
+      # =========================
+      - name: Run API Tests
+        run: npm run test:api:report
+
+      # =========================
+      # ALLURE REPORT GENERATION
+      # =========================
+      - name: Generate Allure Report
+        if: always()
+        run: npm run allure:generate
+
+      # =========================
+      # UPLOAD PLAYWRIGHT REPORT
+      # =========================
+      - name: Upload Playwright Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: playwright-report
+
+      # =========================
+      # UPLOAD NEWMAN REPORT
+      # =========================
+      - name: Upload Newman Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: postman/reports/newman-report.html
+
+      # =========================
+      # UPLOAD ALLURE REPORT
+      # =========================
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
