@@ -1,5 +1,5 @@
-import { InventoryPage } from '../pages/InventoryPage';
-import { CartPage } from '../pages/CartPage';
+import { InventoryPage } from '../pages/inventory.page';
+import { CartPage } from '../pages/cart.page';
 import { CheckoutPage } from '../pages/checkout.page';
 
 export class CheckoutService {

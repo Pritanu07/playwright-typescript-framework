@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/baseTest';
-import { MenuPage } from '../pages/MenuPage';
-import { LoginPage } from '../pages/LoginPage';
+import { MenuPage } from '../pages/menu.page';
+import { LoginPage } from '../pages/login.page';
 
 test('Logout Feature', async ({ login, inventory, page }) => {
 
@@ -25,8 +25,9 @@ test('Logout Feature', async ({ login, inventory, page }) => {
   // =========================
   // VERIFY LOGOUT SUCCESS
   // =========================
-  const loginPage = new LoginPage(page);
+  await expect(page.locator('#login-button'))
+    .toBeVisible({ timeout: 15000 });
 
-  await expect(page.locator('#login-button')).toBeVisible({ timeout: 15000 });
-  await expect(page.locator('#user-name')).toBeVisible({ timeout: 15000 });
+  await expect(page.locator('#user-name'))
+    .toBeVisible({ timeout: 15000 });
 });

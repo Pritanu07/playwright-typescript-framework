@@ -1,5 +1,5 @@
 import { test } from '../fixtures/baseTest';
-import { LoginPage } from '../pages/LoginPage';
+import { LoginPage } from '../pages/login.page';
 import { loginData } from '../api/data/login.data';
 
 test.describe('Login Negative Scenarios', () => {
