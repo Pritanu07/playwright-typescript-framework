@@ -1,13 +1,16 @@
 import { test, expect } from '../fixtures/baseTest';
-import { ApiClient } from '../api/client/apiclient';
 
-test('UI + API integration flow', async ({ page, login, api }) => {
+test('UI login + API sanity check', async ({ page, login, api }) => {
 
+  // =====================
   // API LAYER
+  // =====================
   const apiResponse = await api.login();
   expect(apiResponse.token).toBeDefined();
 
+  // =====================
   // UI FLOW
+  // =====================
   await login.goto();
   await login.login('standard_user', 'secret_sauce');
 
@@ -16,7 +19,12 @@ test('UI + API integration flow', async ({ page, login, api }) => {
   await expect(title).toBeVisible();
   await expect(title).toHaveText('Products');
 
-  // API USERS
+  // =====================
+  // API USERS VALIDATION
+  // =====================
   const users = await api.getUsers();
+
+  expect(users.data).toBeTruthy();
+  expect(Array.isArray(users.data)).toBeTruthy();
   expect(users.data.length).toBeGreaterThan(0);
-});
+}); 
