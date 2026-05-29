@@ -3,28 +3,20 @@ import { ApiClient } from '../api/client/apiclient';
 
 test('UI + API integration flow', async ({ page, login, api }) => {
 
-  // =====================
-  // API LAYER FIRST
-  // =====================
+  // API LAYER
   const apiResponse = await api.login();
   expect(apiResponse.token).toBeDefined();
 
-  // =====================
   // UI FLOW
-  // =====================
-   await login.goto();
-   await login.login('standard_user', 'secret_sauce');
-   await page.waitForTimeout(2000); // small buffer
-   await page.pause();
+  await login.goto();
+  await login.login('standard_user', 'secret_sauce');
 
   const title = page.locator('.title');
+
   await expect(title).toBeVisible();
   await expect(title).toHaveText('Products');
 
-  // Debug (remove later)
-  // await page.pause();
-
-  // API users
+  // API USERS
   const users = await api.getUsers();
   expect(users.data.length).toBeGreaterThan(0);
 });

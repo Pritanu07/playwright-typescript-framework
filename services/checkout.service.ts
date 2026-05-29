@@ -1,6 +1,6 @@
 import { InventoryPage } from '../pages/InventoryPage';
 import { CartPage } from '../pages/CartPage';
-import { CheckoutPage } from '../pages/CheckoutPage';
+import { CheckoutPage } from '../pages/checkout.page';
 
 export class CheckoutService {
 

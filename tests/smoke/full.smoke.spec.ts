@@ -1,5 +1,5 @@
 import { test } from '../../fixtures/baseTest';
-import { CheckoutPage } from '../../pages/CheckoutPage';
+import { CheckoutPage } from '../../pages/checkout.page';
 
 test('SMOKE - checkout basic flow', async ({
   login,
