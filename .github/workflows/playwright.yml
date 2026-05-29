@@ -1,83 +1,40 @@
-name: Playwright CI + Allure Report (POM_SAUCEDEMO)
-
+name: Playwright Tests
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
-
-permissions:
-  contents: write
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      # =========================
-      # Checkout Code
-      # =========================
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # =========================
-      # Setup Node
-      # =========================
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # =========================
-      # Install Dependencies
-      # =========================
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm ci
 
-      # =========================
-      # Install Playwright Browsers
-      # =========================
-      - name: Install Playwright Browsers
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # =========================
-      # Run Tests
-      # =========================
-      - name: Run Playwright Tests
+      - name: Generate auth state
+        run: npx ts-node auth/generateStandard.ts
+
+      - name: Run tests
         run: npx playwright test
 
-      # =========================
-      # Ensure report exists
-      # =========================
-      - name: Ensure report exists
-        if: always()
-        run: mkdir -p playwright-report
+      - name: Run tests
+        run: npm run test:ci
 
-      # =========================
-      # Debug Report Folder
-      # =========================
-      - name: Verify Playwright Report
-        if: always()
-        run: ls -R playwright-report || echo "No report folder found"
-
-      # =========================
-      # Upload Test Results
-      # =========================
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: test-results/
-          retention-days: 30
-
-      # =========================
-      # Upload HTML Report
-      # =========================
-      - name: Upload Playwright HTML Report
+      - name: Upload Playwright report 
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          path: playwright-report

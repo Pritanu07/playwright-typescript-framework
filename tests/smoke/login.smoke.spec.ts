@@ -1,6 +1,9 @@
-import { test } from '../../fixtures/baseTest';
+import { test } from '@playwright/test';
+import { LoginPage } from '../../pages/login.page';
 
-test('SMOKE - login validation', async ({ login }) => {
+test('@smoke login validation', async ({ page }) => {
+
+  const login = new LoginPage(page);
 
   // =========================
   // NAVIGATE
@@ -16,7 +19,7 @@ test('SMOKE - login validation', async ({ login }) => {
   );
 
   // =========================
-  // STABLE VALIDATION
+  // VALIDATION
   // =========================
   await login.verifyLoginSuccess();
 });

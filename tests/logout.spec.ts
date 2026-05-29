@@ -1,33 +1,36 @@
-import { test, expect } from '../fixtures/baseTest';
-import { MenuPage } from '../pages/menu.page';
+import { test } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
+import { InventoryPage } from '../pages/inventory.page';
+import { MenuPage } from '../pages/menu.page';
 
-test('Logout Feature', async ({ login, inventory, page }) => {
+test('Logout Feature', async ({ page }) => {
 
   // =========================
-  // LOGIN
+  // PAGE OBJECTS
+  // =========================
+  const login = new LoginPage(page);
+  const inventory = new InventoryPage(page);
+  const menuPage = new MenuPage(page);
+
+  // =========================
+  // LOGIN FLOW
   // =========================
   await login.goto();
   await login.login('standard_user', 'secret_sauce');
   await login.verifyLoginSuccess();
 
   // =========================
-  // VERIFY USER IS LOGGED IN
+  // INVENTORY FLOW
   // =========================
   await inventory.verifyInventoryPageIsDisplayed();
 
   // =========================
   // LOGOUT FLOW
   // =========================
-  const menuPage = new MenuPage(page);
   await menuPage.logout();
 
   // =========================
   // VERIFY LOGOUT SUCCESS
   // =========================
-  await expect(page.locator('#login-button'))
-    .toBeVisible({ timeout: 15000 });
-
-  await expect(page.locator('#user-name'))
-    .toBeVisible({ timeout: 15000 });
+  await login.verifyLoginPageIsDisplayed();
 });

@@ -12,7 +12,6 @@ export class CheckoutService {
 
   async completePurchase(productIds: string[]) {
 
-
     // =========================
     // ADD PRODUCTS
     // =========================
@@ -20,17 +19,21 @@ export class CheckoutService {
       await this.inventory.addProduct(productId);
     }
 
+    await this.inventory.verifyCartBadgeCount(productIds.length);
+
     // =========================
     // CART FLOW
     // =========================
     await this.inventory.goToCart();
-    await this.cart.verifyCartPageIsDisplayed();
+
+    await this.cart.verifyCartPage();
     await this.cart.proceedToCheckout();
 
     // =========================
     // CHECKOUT FLOW
     // =========================
     await this.checkout.fillDetails('Test', 'User', '12345');
+
     await this.checkout.finishOrder();
     await this.checkout.verifySuccess();
   }

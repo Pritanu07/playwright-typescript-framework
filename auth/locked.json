@@ -1,0 +1,17 @@
+import { chromium } from '@playwright/test';
+
+export default async function generateLockedAuth() {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+
+  await page.goto('https://www.saucedemo.com/');
+  await page.fill('#user-name', 'locked_out_user');
+  await page.fill('#password', 'secret_sauce');
+  await page.click('#login-button');
+
+  await page.context().storageState({
+    path: 'auth/locked.json'
+  });
+
+  await browser.close();
+}

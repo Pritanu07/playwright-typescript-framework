@@ -1,4 +1,4 @@
-import { test } from '../fixtures/baseTest';
+import { test } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
 import { loginData } from '../api/data/login.data';
 
@@ -14,7 +14,9 @@ test.describe('Login Negative Scenarios', () => {
       loginData.lockedUser.password
     );
 
-    await login.verifyLoginErrorMessage('Sorry, this user has been locked out');
+    await login.verifyLoginErrorMessage(
+      'Sorry, this user has been locked out'
+    );
   });
 
   test('Invalid password should not login', async ({ page }) => {
@@ -27,7 +29,9 @@ test.describe('Login Negative Scenarios', () => {
       loginData.invalidUser.password
     );
 
-    await login.verifyLoginErrorMessage('Username and password do not match');
+    await login.verifyLoginErrorMessage(
+      'Username and password do not match'
+    );
   });
 
   test('Empty username should show validation error', async ({ page }) => {
@@ -37,7 +41,9 @@ test.describe('Login Negative Scenarios', () => {
 
     await login.login('', loginData.emptyUser.password);
 
-    await login.verifyLoginErrorMessage('Username is required');
+    await login.verifyLoginErrorMessage(
+      'Username is required'
+    );
   });
 
   test('Empty password should show validation error', async ({ page }) => {
@@ -50,7 +56,9 @@ test.describe('Login Negative Scenarios', () => {
       ''
     );
 
-    await login.verifyLoginErrorMessage('Password is required');
+    await login.verifyLoginErrorMessage(
+      'Password is required'
+    );
   });
 
 });

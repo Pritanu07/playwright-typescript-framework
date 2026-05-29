@@ -1,27 +1,38 @@
-import dotenv from 'dotenv';
-
-// 🔥 FORCE PATH EXPLICITLY
-dotenv.config({ path: '.env' });
-
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
+  globalSetup: require.resolve('./global-setup'),
+
   testDir: './tests',
 
-  use: {
-    baseURL: 'https://reqres.in/api',
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-  },
+  fullyParallel: true,
+  retries: 1,
 
   reporter: [
     ['list'],
-    ['html'],
-    ['allure-playwright', { outputFolder: 'allure-results' }]
+    ['allure-playwright'],
   ],
 
-  outputDir: 'test-results',
-  retries: 1,
-  timeout: 30000,
+  use: {
+    baseURL: 'https://www.saucedemo.com/',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    storageState: 'storageState.json',
+  },
+
+  projects: [
+    {
+      name: 'smoke',
+      testMatch: /.*smoke\.spec\.ts/
+    },
+    {
+      name: 'regression',
+      testMatch: /.*spec\.ts/
+    },
+    {
+      name: 'e2e',
+      testMatch: /.*e2e\.spec\.ts/
+    }
+  ]
 });

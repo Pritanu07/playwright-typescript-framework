@@ -3,68 +3,46 @@ import { APIRequestContext, expect } from '@playwright/test';
 export class ApiClient {
   constructor(private request: APIRequestContext) {}
 
-  private BASE_URL = 'https://reqres.in/api';
+  private BASE_URL = 'https://jsonplaceholder.typicode.com';
 
-  // =========================
-  // LOGIN API
-  // =========================
-  async login() {
-    const res = await this.request.post(`${this.BASE_URL}/login`, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: {
-        email: 'eve.holt@reqres.in',
-        password: 'cityslicka'
-      }
-    });
-
-    const text = await res.text();
-
-    let body: any;
-    try {
-      body = JSON.parse(text);
-    } catch {
-      body = { raw: text };
-    }
-
-    console.log('LOGIN STATUS:', res.status());
-    console.log('LOGIN RESPONSE:', body);
-
-    // Assert API success
-    expect(res.ok(), `Login failed: ${text}`).toBeTruthy();
-
-    // Assert token exists
-    expect(body.token, 'Token missing in login response').toBeDefined();
-
-    return body;
-  }
-
-  // =========================
-  // GET USERS API
-  // =========================
+  // =====================
+  // GET USERS (API LAYER)
+  // =====================
   async getUsers() {
-    const res = await this.request.get(`${this.BASE_URL}/users?page=2`);
+    const res = await this.request.get(`${this.BASE_URL}/users`);
 
-    const text = await res.text();
-
-    let body: any;
-    try {
-      body = JSON.parse(text);
-    } catch {
-      body = { raw: text };
-    }
+    const body = await res.json();
 
     console.log('USERS STATUS:', res.status());
     console.log('USERS RESPONSE:', body);
 
-    // Assert API success
-    expect(res.ok(), `Get users failed: ${text}`).toBeTruthy();
+    expect(res.ok()).toBeTruthy();
+    expect(Array.isArray(body)).toBeTruthy();
+    expect(body.length).toBeGreaterThan(0);
 
-    // Assert data exists
-    expect(body.data, 'Users data missing').toBeDefined();
-    expect(Array.isArray(body.data)).toBeTruthy();
-    expect(body.data.length).toBeGreaterThan(0);
+    return body;
+  }
+
+  // =====================
+  // MOCK LOGIN (optional API demo)
+  // JSONPlaceholder doesn't have login
+  // =====================
+  async mockLogin() {
+    const res = await this.request.post(`${this.BASE_URL}/posts`, {
+      data: {
+        title: 'test login',
+        body: 'qa automation',
+        userId: 1
+      }
+    });
+
+    const body = await res.json();
+
+    console.log('MOCK LOGIN STATUS:', res.status());
+    console.log('MOCK LOGIN RESPONSE:', body);
+
+    expect(res.ok()).toBeTruthy();
+    expect(body.id).toBeDefined();
 
     return body;
   }

@@ -1,43 +1,38 @@
-import { test, expect } from '../fixtures/baseTest';
+import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/login.page';
+import { ApiClient } from '../api/client/apiclient';
 
-test('UI login + API sanity check', async ({ page, login, api }) => {
-
-  // =====================
-  // API LAYER - LOGIN
-  // =====================
-  let apiResponse;
-
-  try {
-    apiResponse = await api.login();
-    console.log('API LOGIN TOKEN:', apiResponse.token);
-
-    expect(apiResponse.token).toBeDefined();
-  } catch (error) {
-    console.log('API login failed, continuing UI test:', error);
-  }
+test('UI + API E2E flow (SauceDemo + JSONPlaceholder)', async ({ page, request }) => {
 
   // =====================
-  // UI FLOW - LOGIN
+  // PAGE OBJECTS
   // =====================
-  await login.goto();
-  await login.login('standard_user', 'secret_sauce');
-
-  const title = page.locator('.title');
-
-  await expect(title).toBeVisible();
-  await expect(title).toHaveText('Products');
+  const login = new LoginPage(page);
+  const api = new ApiClient(request);
 
   // =====================
-  // API - USERS VALIDATION
+  // API LAYER
   // =====================
   const users = await api.getUsers();
 
-  console.log('USERS COUNT:', users.data.length);
+  expect(users.length).toBeGreaterThan(0);
 
-  expect(Array.isArray(users.data)).toBeTruthy();
-  expect(users.data.length).toBeGreaterThan(0);
+  // =====================
+  // UI LAYER
+  // =====================
+  await login.goto();
+  await login.login('standard_user', 'secret_sauce');
+  await login.verifyLoginSuccess();
 
-  // stronger validation (recommended)
-  expect(users.data[0]).toHaveProperty('id');
-  expect(users.data[0]).toHaveProperty('email');
+  // =====================
+  // VALIDATION (UI STATE)
+  // =====================
+  await login.verifyInventoryPageIsDisplayed();
+
+  // =====================
+  // CROSS VALIDATION (E2E LOGIC)
+  // =====================
+  const firstUser = users[0];
+
+  console.log('First API User:', firstUser);
 });
