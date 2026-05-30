@@ -1,111 +1,85 @@
 name: UI + API + Allure CI Pipeline
 
 on:
-push:
-branches: [main]
-pull_request:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
-test:
-runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-```
-steps:
-  # =========================
-  # CHECKOUT CODE
-  # =========================
-  - name: Checkout repository
-    uses: actions/checkout@v4
+    steps:
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  # =========================
-  # SETUP NODE
-  # =========================
-  - name: Setup Node.js
-    uses: actions/setup-node@v4
-    with:
-      node-version: 20
+      # Setup Node
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-  # =========================
-  # INSTALL DEPENDENCIES
-  # =========================
-  - name: Install dependencies
-    run: npm ci
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
-  # =========================
-  # INSTALL PLAYWRIGHT BROWSERS
-  # =========================
-  - name: Install Playwright browsers
-    run: npx playwright install --with-deps
+      # Install Playwright browsers
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
 
-  # =========================
-  # INSTALL ALLURE CLI
-  # =========================
-  - name: Install Allure CLI
-    run: |
-      sudo apt-get update
-      sudo apt-get install -y default-jre
+      # Install Allure CLI
+      - name: Install Allure CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre
 
-      curl -L -o allure.tgz https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.27.0/allure-commandline-2.27.0.tgz
+          curl -L -o allure.tgz https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.27.0/allure-commandline-2.27.0.tgz
 
-      tar -xzf allure.tgz
-      sudo mv allure-2.27.0 /opt/allure
-      sudo ln -sf /opt/allure/bin/allure /usr/bin/allure
+          tar -xzf allure.tgz
+          sudo mv allure-2.27.0 /opt/allure
+          sudo ln -sf /opt/allure/bin/allure /usr/bin/allure
 
-  # =========================
-  # DEBUG POSTMAN STRUCTURE (IMPORTANT FIX)
-  # =========================
-  - name: Debug Postman files
-    run: |
-      echo "===== PROJECT STRUCTURE ====="
-      ls -R postman || true
+      # Debug Postman files
+      - name: Debug Postman files
+        run: |
+          echo "===== PROJECT STRUCTURE ====="
+          ls -R postman || true
 
-      echo ""
-      echo "===== ENV FILE ====="
-      cat postman/Environments/qa.environment.json || true
+          echo ""
+          echo "===== ENV FILE ====="
+          cat postman/Environments/qa.environment.json || true
 
-      echo ""
-      echo "===== COLLECTION FILE CHECK ====="
-      cat postman/collections/api-automation.collection.json || true
+          echo ""
+          echo "===== COLLECTION FILE CHECK ====="
+          cat postman/collections/api-automation.collection.json || true
 
-  # =========================
-  # VERIFY API CONNECTIVITY
-  # =========================
-  - name: Verify API Connectivity (JSONPlaceholder / ReqRes fallback)
-    run: |
-      curl -i https://jsonplaceholder.typicode.com/users || true
-      curl -i https://reqres.in/api/users?page=2 || true
+      # Verify API connectivity
+      - name: Verify API Connectivity
+        run: |
+          curl -i https://jsonplaceholder.typicode.com/users || true
+          curl -i https://reqres.in/api/users?page=2 || true
 
-  # =========================
-  # RUN UI TESTS
-  # =========================
-  - name: Run UI Tests
-    run: npm run test:ci
+      # Run UI tests
+      - name: Run UI Tests
+        run: npm run test:ci
 
-  # =========================
-  # RUN API TESTS (NEWMAN)
-  # =========================
-  - name: Run API Tests
-    run: |
-      echo "Running Newman tests..."
-      npm run test:api:report
+      # Run API tests
+      - name: Run API Tests
+        run: npm run test:api:report
 
-  # =========================
-  # UPLOAD PLAYWRIGHT REPORT
-  # =========================
-  - name: Upload Playwright Report
-    if: always()
-    uses: actions/upload-artifact@v4
-    with:
-      name: playwright-report
-      path: playwright-report
+      # Upload Playwright report
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
 
-  # =========================
-  # UPLOAD NEWMAN REPORT
-  # =========================
-  - name: Upload Newman Report
-    if: always()
-    uses: actions/upload-artifact@v4
-    with:
-      name: newman-report
-      path: postman/reports/newman-report.html
-```
+      # Upload Newman report
+      - name: Upload Newman Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: postman/reports/newman-report.html
