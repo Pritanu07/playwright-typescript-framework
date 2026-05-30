@@ -10,7 +10,7 @@
     "test:smoke": "playwright test --project=smoke",
     "test:e2e": "playwright test --project=e2e",
 
-    "test:api:report": "newman run postman/collections/api-automation.collection.json -e postman/environments/QA.json -r cli,htmlextra --reporter-htmlextra-export postman/reports/newman-report.html",
+    "test:api:report": "newman run postman/collections/api-automation.collection.json -e postman/Environments/qa.environment.json -r cli,htmlextra --reporter-htmlextra-export postman/reports/newman-report.html",
 
     "test:all": "npm run test && npm run test:api:report",
 

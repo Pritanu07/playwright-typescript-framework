@@ -10,44 +10,63 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # =========================
+      # CHECKOUT CODE
+      # =========================
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # =========================
+      # SETUP NODE
+      # =========================
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # =========================
+      # INSTALL DEPENDENCIES
+      # =========================
       - name: Install dependencies
         run: npm ci
 
+      # =========================
+      # INSTALL PLAYWRIGHT BROWSERS
+      # =========================
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       # =========================
-      # UI TESTS (PLAYWRIGHT)
+      # INSTALL ALLURE CLI (FIX FOR YOUR ERROR)
+      # =========================
+      - name: Install Allure CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre
+
+          curl -L -o allure.tgz https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.27.0/allure-commandline-2.27.0.tgz
+
+          tar -xvzf allure.tgz
+          sudo mv allure-2.27.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+      # =========================
+      # RUN UI TESTS (PLAYWRIGHT)
       # =========================
       - name: Run UI Tests
         run: npm run test:ci
 
       # =========================
-      # API TESTS (POSTMAN / NEWMAN)
+      # RUN API TESTS (POSTMAN / NEWMAN)
       # =========================
       - name: Run API Tests
         run: npm run test:api:report
-
-      # =========================
-      # ALLURE REPORT GENERATION
-      # =========================
-      - name: Generate Allure Report
-        if: always()
-        run: npm run allure:generate
 
       # =========================
       # UPLOAD PLAYWRIGHT REPORT
       # =========================
       - name: Upload Playwright Report
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
@@ -63,12 +82,4 @@ jobs:
           name: newman-report
           path: postman/reports/newman-report.html
 
-      # =========================
-      # UPLOAD ALLURE REPORT
-      # =========================
-      - name: Upload Allure Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: allure-report
+     
