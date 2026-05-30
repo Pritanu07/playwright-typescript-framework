@@ -1,6 +1,6 @@
 {
   "name": "QA",
-  "_postman_variable_scope": "environment",
+  "_postman_variable_scope": "environments",
   "values": [
     {
       "key": "baseUrl",
