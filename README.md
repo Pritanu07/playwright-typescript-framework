@@ -46,6 +46,8 @@ POM-saucedemo/
 ├── package.json
 ├── Jenkinsfile
 └── README.md
+
+
 ⚙️ Tech Stack
 Playwright (TypeScript)
 Node.js
@@ -62,6 +64,7 @@ Cart operations
 Checkout flow
 Logout functionality
 ✔ API Automation
+
 Playwright API Layer:
 GET Users
 POST Login / Mock APIs
@@ -79,12 +82,14 @@ Example flow:
 Fetch API users
 Validate UI login flow
 Cross-check data consistency
+
 🧰 Design Patterns Used
 Page Object Model (POM)
 Service Layer Pattern
 Fixture-based test injection
 API client abstraction
 Environment-based configuration
+
 ▶️ How to Run Tests
 Install dependencies
 npm install
