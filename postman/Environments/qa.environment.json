@@ -6,11 +6,6 @@
       "key": "baseUrl",
       "value": "https://reqres.in/api",
       "enabled": true
-    },
-    {
-      "key": "token",
-      "value": "",
-      "enabled": true
     }
   ]
 }

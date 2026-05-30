@@ -48,9 +48,8 @@
               "pm.test('Token exists', function () {",
               "    pm.expect(jsonData.token).to.exist;",
               "    pm.expect(jsonData.token).to.be.a('string');",
-              "});",
-              "",
-              "pm.environment.set('token', jsonData.token);"
+              "    pm.expect(jsonData.token.length).to.be.greaterThan(0);",
+              "});"
             ]
           }
         }
