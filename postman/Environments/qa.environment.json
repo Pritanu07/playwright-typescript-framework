@@ -1,10 +1,10 @@
 {
-  "name": "qa",
-  "_postman_variable_scope": "environments",
+  "name": "QA",
+  "_postman_variable_scope": "Environments",
   "values": [
     {
       "key": "baseUrl",
-      "value": "https://reqres.in/api",
+      "value": "https://jsonplaceholder.typicode.com",
       "enabled": true
     }
   ]

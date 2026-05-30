@@ -1,37 +1,29 @@
 {
   "info": {
-    "name": "api-automation Collection (ReqRes)",
+    "name": "api-automation Collection (JSONPlaceholder)",
     "_postman_id": "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-    "description": "Working API tests for Postman + Newman",
+    "description": "Stable API tests for JSONPlaceholder + Newman CI",
     "schema": "https://schema.getpostman.com/json/collections/v2.1.0/collection.json"
   },
 
   "variable": [
     {
       "key": "baseUrl",
-      "value": "https://reqres.in/api"
+      "value": "https://jsonplaceholder.typicode.com"
     }
   ],
 
   "item": [
+
     {
-      "name": "Login API",
+      "name": "Get Users",
       "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
+        "method": "GET",
+        "header": [],
         "url": {
-          "raw": "{{baseUrl}}/login",
+          "raw": "{{baseUrl}}/users",
           "host": ["{{baseUrl}}"],
-          "path": ["login"]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"eve.holt@reqres.in\",\n  \"password\": \"cityslicka\"\n}"
+          "path": ["users"]
         }
       },
       "event": [
@@ -43,12 +35,21 @@
               "    pm.response.to.have.status(200);",
               "});",
               "",
-              "const jsonData = pm.response.json();",
+              "let jsonData;",
               "",
-              "pm.test('Token exists', function () {",
-              "    pm.expect(jsonData.token).to.exist;",
-              "    pm.expect(jsonData.token).to.be.a('string');",
-              "    pm.expect(jsonData.token.length).to.be.greaterThan(0);",
+              "try {",
+              "    jsonData = pm.response.json();",
+              "} catch (e) {",
+              "    console.log('Response is not valid JSON:', pm.response.text());",
+              "    pm.expect.fail('Invalid JSON response');",
+              "}",
+              "",
+              "pm.test('Response is array', function () {",
+              "    pm.expect(Array.isArray(jsonData)).to.be.true;",
+              "});",
+              "",
+              "pm.test('Users list is not empty', function () {",
+              "    pm.expect(jsonData.length).to.be.greaterThan(0);",
               "});"
             ]
           }
@@ -57,19 +58,23 @@
     },
 
     {
-      "name": "Get Users",
+      "name": "Create Post",
       "request": {
-        "method": "GET",
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"test login\",\n  \"body\": \"qa automation\",\n  \"userId\": 1\n}"
+        },
         "url": {
-          "raw": "{{baseUrl}}/users?page=2",
+          "raw": "{{baseUrl}}/posts",
           "host": ["{{baseUrl}}"],
-          "path": ["users"],
-          "query": [
-            {
-              "key": "page",
-              "value": "2"
-            }
-          ]
+          "path": ["posts"]
         }
       },
       "event": [
@@ -77,24 +82,24 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status code is 200', function () {",
-              "    pm.response.to.have.status(200);",
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
               "});",
               "",
-              "const jsonData = pm.response.json();",
+              "let jsonData = pm.response.json();",
               "",
-              "pm.test('Response structure valid', function () {",
-              "    pm.expect(jsonData).to.have.property('data');",
-              "    pm.expect(jsonData.data).to.be.an('array');",
+              "pm.test('Post ID exists', function () {",
+              "    pm.expect(jsonData.id).to.exist;",
               "});",
               "",
-              "pm.test('Data not empty', function () {",
-              "    pm.expect(jsonData.data.length).to.be.greaterThan(0);",
+              "pm.test('Title is correct', function () {",
+              "    pm.expect(jsonData.title).to.eql('test login');",
               "});"
             ]
           }
         }
       ]
     }
+
   ]
 }
