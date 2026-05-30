@@ -10,25 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup Node
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Install Playwright browsers
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # Install Allure CLI
       - name: Install Allure CLI
         run: |
           sudo apt-get update
@@ -40,48 +35,41 @@ jobs:
           sudo mv allure-2.27.0 /opt/allure
           sudo ln -sf /opt/allure/bin/allure /usr/bin/allure
 
-      # Debug Postman files
       - name: Debug Postman files
         run: |
           echo "===== PROJECT STRUCTURE ====="
           ls -R postman || true
 
-          echo ""
           echo "===== ENV FILE ====="
           cat postman/Environments/qa.environment.json || true
 
-          echo ""
-          echo "===== COLLECTION FILE CHECK ====="
+          echo "===== COLLECTION FILE ====="
           cat postman/collections/api-automation.collection.json || true
 
-      # Verify API connectivity
       - name: Verify API Connectivity
         run: |
           curl -i https://jsonplaceholder.typicode.com/users || true
           curl -i https://reqres.in/api/users?page=2 || true
 
-      # Run UI tests
       - name: Run UI Tests
         run: npm run test:ci
 
-      # Generate Allure report
+      # ✅ FIXED ALLURE GENERATION
       - name: Generate Allure Report
-        run: |                          
-        allure generate allure-results --clean -o allure-report
+        run: |
+          allure generate allure-results --clean -o allure-report
 
-      # Upload Allure Report
+      # ✅ FIXED ALLURE UPLOAD
       - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-        name: allure-report
-        path: allure-report
+          name: allure-report
+          path: allure-report
 
-      # Run API tests
       - name: Run API Tests
         run: npm run test:api:report
 
-      # Upload Playwright report
       - name: Upload Playwright Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -89,7 +77,6 @@ jobs:
           name: playwright-report
           path: playwright-report
 
-      # Upload Newman report
       - name: Upload Newman Report
         if: always()
         uses: actions/upload-artifact@v4
