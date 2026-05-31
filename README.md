@@ -41,8 +41,6 @@ It demonstrates practical QA automation skills including:
 
 
 ## 🏗️ Framework Structure
-
-```text
 pages/        → Page Object Model (UI layer)
 tests/        → UI + API test cases
 api/          → API automation layer
@@ -52,9 +50,10 @@ postman/      → Newman collections
 Assets/       → Reports and screenshots
 
 
-<<<<<<< HEAD
-=======
+
 🏗️ Project Architecture
+
+
 POM-saucedemo/
 │
 ├── .github/workflows/        → CI/CD pipeline (GitHub Actions)
@@ -90,8 +89,8 @@ POM-saucedemo/
 └── README.md
 
 
->>>>>>> 2a86515302a17b37a7977da858287c1ffbcb1ec2
 ⚙️ Tech Stack
+
 Playwright
 TypeScript
 Node.js
@@ -99,12 +98,16 @@ Postman + Newman
 GitHub Actions (CI/CD)
 🧰 Design Patterns
 Page Object Model (POM)
-<<<<<<< HEAD
+
+ HEAD
+
 Fixture-based architecture
 API client abstraction
 Separation of UI and API layers
-=======
+
+
 🧪 Test Coverage
+
 ✔ UI Automation (SauceDemo)
 Login (valid & negative cases)
 Product listing validation
@@ -114,11 +117,14 @@ Logout functionality
 ✔ API Automation
 
 Playwright API Layer:
+
 GET Users
 POST Login / Mock APIs
 Response validation
 Schema checks
+
 Postman/Newman:
+
 Login API
 Get Users API
 Data validation tests
@@ -132,16 +138,18 @@ Validate UI login flow
 Cross-check data consistency
 
 🧰 Design Patterns Used
+
 Page Object Model (POM)
 Service Layer Pattern
 Fixture-based test injection
 API client abstraction
 Environment-based configuration
->>>>>>> 2a86515302a17b37a7977da858287c1ffbcb1ec2
+
 
 ▶️ How to Run Tests
 
 Install dependencies
+
 npm install
 Run all tests
 npx playwright test
@@ -149,9 +157,12 @@ Run UI tests
 npx playwright test tests
 Run API tests
 npx playwright test api/tests
+
 View report
 npx playwright show-report
+
 📊 Reports
+
 Playwright HTML Report
 Execution summary
 Screenshots on failure
@@ -178,7 +189,9 @@ UI test execution
 API test execution
 Report generation
 Artifact upload
+
 📌 Key Features
+
 Playwright UI automation framework
 API testing integration
 Hybrid testing approach
@@ -186,6 +199,8 @@ POM-based structure
 CI/CD pipeline support
 Debugging (Trace, Video, Screenshot)
 Scalable framework design
+
+
 🌐 Live Report
 
 👉 https://pritanu07.github.io/playwright-typescript-framework/
