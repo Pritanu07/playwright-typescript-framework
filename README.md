@@ -52,6 +52,45 @@ postman/      → Newman collections
 Assets/       → Reports and screenshots
 
 
+<<<<<<< HEAD
+=======
+🏗️ Project Architecture
+POM-saucedemo/
+│
+├── .github/workflows/        → CI/CD pipeline (GitHub Actions)
+├── api/                      → API automation framework
+│   ├── client/
+│   ├── data/
+│   ├── requests/
+│   ├── tests/
+│   └── utils/
+│
+├── pages/                   → Page Object Model (UI layer)
+├── tests/                   → UI + Hybrid test cases
+│   ├── smoke/
+│   ├── regression/
+│
+├── fixtures/                → Test setup & hooks
+├── postman/                 → Postman + Newman API tests
+│   ├── collections/
+│   ├── Environments/
+│   └── scripts/
+│
+├── auth/                    → Authentication test states
+├── services/                → Business logic layer
+├── utils/                   → Helpers + Allure utilities
+│
+├── Assets/                  → Test report screenshots
+├── docs/                    → (recommended for images)
+│
+├── playwright.config.ts
+├── global-setup.ts
+├── package.json
+├── Jenkinsfile
+└── README.md
+
+
+>>>>>>> 2a86515302a17b37a7977da858287c1ffbcb1ec2
 ⚙️ Tech Stack
 Playwright
 TypeScript
@@ -60,9 +99,45 @@ Postman + Newman
 GitHub Actions (CI/CD)
 🧰 Design Patterns
 Page Object Model (POM)
+<<<<<<< HEAD
 Fixture-based architecture
 API client abstraction
 Separation of UI and API layers
+=======
+🧪 Test Coverage
+✔ UI Automation (SauceDemo)
+Login (valid & negative cases)
+Product listing validation
+Cart operations
+Checkout flow
+Logout functionality
+✔ API Automation
+
+Playwright API Layer:
+GET Users
+POST Login / Mock APIs
+Response validation
+Schema checks
+Postman/Newman:
+Login API
+Get Users API
+Data validation tests
+Environment-based execution (dev / QA)
+✔ Hybrid Testing (UI + API)
+
+Example flow:
+
+Fetch API users
+Validate UI login flow
+Cross-check data consistency
+
+🧰 Design Patterns Used
+Page Object Model (POM)
+Service Layer Pattern
+Fixture-based test injection
+API client abstraction
+Environment-based configuration
+>>>>>>> 2a86515302a17b37a7977da858287c1ffbcb1ec2
 
 ▶️ How to Run Tests
 
