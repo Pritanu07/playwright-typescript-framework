@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  globalSetup: require.resolve('./global-setup'),
+  //globalSetup: require.resolve('./global-setup'),
 
   testDir: './tests',
 
@@ -16,9 +16,9 @@ export default defineConfig({
 
   use: {
     baseURL: 'https://www.saucedemo.com/',
-    trace: 'on-first-retry',
+    trace: 'on',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    video: 'on',
     storageState: 'storageState.json',
   },
 

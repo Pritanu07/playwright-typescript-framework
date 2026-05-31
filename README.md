@@ -1,212 +1,122 @@
-POM-Saucedemo – UI + API + Hybrid Automation Framework
-🚀 Overview
+# 🚀 POM-Saucedemo – Playwright UI + API Automation Framework
 
-This is a production-style QA automation framework built using:
+![Playwright](https://img.shields.io/badge/Playwright-Automation-45ba4b?style=for-the-badge&logo=playwright)
+![TypeScript](https://img.shields.io/badge/TypeScript-Testing-blue?style=for-the-badge&logo=typescript)
+![CI/CD](https://img.shields.io/badge/CI/CD-GitHub%20Actions-orange?style=for-the-badge&logo=githubactions)
 
-🎭 Playwright (UI Automation)
-🔗 API Testing (Playwright Request + Postman/Newman)
-🧱 Page Object Model (POM)
-🔄 Hybrid UI + API Testing
-⚙️ CI/CD (GitHub Actions + Jenkins)
-📊 Reporting (Playwright HTML + Allure + Newman)
 
-It demonstrates real-world SDET / QA Automation Engineer skills.
+## 📌 Overview
 
-🏗️ Project Architecture
-POM-saucedemo/
-│
-├── .github/workflows/        → CI/CD pipeline (GitHub Actions)
-├── api/                      → API automation framework
-│   ├── client/
-│   ├── data/
-│   ├── requests/
-│   ├── tests/
-│   └── utils/
-│
-├── pages/                   → Page Object Model (UI layer)
-├── tests/                   → UI + Hybrid test cases
-│   ├── smoke/
-│   ├── regression/
-│
-├── fixtures/                → Test setup & hooks
-├── postman/                 → Postman + Newman API tests
-│   ├── collections/
-│   ├── Environments/
-│   └── scripts/
-│
-├── auth/                    → Authentication test states
-├── services/                → Business logic layer
-├── utils/                   → Helpers + Allure utilities
-│
-├── Assets/                  → Test report screenshots
-├── docs/                    → (recommended for images)
-│
-├── playwright.config.ts
-├── global-setup.ts
-├── package.json
-├── Jenkinsfile
-└── README.md
+This is a Playwright + TypeScript automation framework for **UI, API, and hybrid testing**.
+
+It demonstrates practical QA automation skills including:
+- UI automation using Playwright
+- API testing using Playwright and Postman/Newman
+- Page Object Model (POM) design
+- Test framework structuring
+- CI/CD integration using GitHub Actions
+- Reporting (HTML, Trace, Video, Screenshots)
+
+
+## 🧪 Test Coverage
+
+### ✔ UI Automation
+- Login functionality (valid and invalid)
+- Product listing validation
+- Cart operations
+- Checkout flow
+- Logout functionality
+
+
+### ✔ API Automation
+- GET API validation
+- POST API testing
+- Response validation
+- Basic schema validation
+
+
+### ✔ Hybrid Testing
+- API data used for UI validation
+- Cross-verification between UI and API layers
+
+
+## 🏗️ Framework Structure
+
+```text
+pages/        → Page Object Model (UI layer)
+tests/        → UI + API test cases
+api/          → API automation layer
+fixtures/     → Test setup and dependency injection
+utils/        → Helper functions
+postman/      → Newman collections
+Assets/       → Reports and screenshots
+
+
 ⚙️ Tech Stack
-Playwright (TypeScript)
+Playwright
+TypeScript
 Node.js
 Postman + Newman
-Allure Reporting
-GitHub Actions
-Jenkins (CI/CD)
+GitHub Actions (CI/CD)
+🧰 Design Patterns
 Page Object Model (POM)
-🧪 Test Coverage
-✔ UI Automation (SauceDemo)
-Login (valid & negative cases)
-Product listing validation
-Cart operations
-Checkout flow
-Logout functionality
-✔ API Automation
-Playwright API Layer:
-GET Users
-POST Login / Mock APIs
-Response validation
-Schema checks
-Postman/Newman:
-Login API
-Get Users API
-Data validation tests
-Environment-based execution (dev / QA)
-✔ Hybrid Testing (UI + API)
-
-Example flow:
-
-Fetch API users
-Validate UI login flow
-Cross-check data consistency
-🧰 Design Patterns Used
-Page Object Model (POM)
-Service Layer Pattern
-Fixture-based test injection
+Fixture-based architecture
 API client abstraction
-Environment-based configuration
+Separation of UI and API layers
+
 ▶️ How to Run Tests
+
 Install dependencies
 npm install
-Run all UI tests
+Run all tests
 npx playwright test
-Run smoke tests
-npx playwright test tests/smoke
-Run API tests (Playwright API layer)
+Run UI tests
+npx playwright test tests
+Run API tests
 npx playwright test api/tests
-Run Postman API tests (Newman)
-npm run test:api:report
-📊 Reports
-🎭 Playwright HTML Report
+View report
 npx playwright show-report
+📊 Reports
+Playwright HTML Report
+Execution summary
+Screenshots on failure
+Video recording (on failure)
+Trace viewer support
+Newman Report
 
-Features:
-
-Test execution status
-Screenshots (failures)
-Video recording
-Trace viewer
-📊 Allure Report
-
-Generate:
-
-allure generate allure-results --clean -o allure-report
-
-Open:
-
-allure open allure-report
-
-📌 CI also uploads Allure results as artifacts
-
-📡 Newman (Postman) Report
-
-Stored locally:
+Stored at:
 
 postman/reports/newman-report.html
-
-Or downloaded from GitHub Actions artifacts.
-
-📸 Test Evidence (Portfolio Screenshots)
-
-Stored in:
-
-Assets/reports-screenshots/
-
-Includes:
-
-Playwright report screenshot
-Allure dashboard screenshot
-Newman report screenshot
-🔄 CI/CD Pipeline
-GitHub Actions
-
-On every push:
-
-✔ Install dependencies
-✔ Run UI tests
-✔ Run API tests
-✔ Generate reports
-✔ Upload artifacts
-
-Artifacts include:
-
-playwright-report
-allure-results
-newman-report
-Jenkins (Optional CI)
-
-Supports:
-
-Build execution
-Test runs
-Integration validation
 🔐 Authentication Strategy
 
-Located in:
-
-auth/
-
-Supports:
-
-standard user
-locked user
-admin user
-
-Used for session-based testing via:
+Session reuse using:
 
 storageState.json
-📊 Key Features
+Avoids repeated login
+Improves execution speed
+⚙️ CI/CD Pipeline
 
-✔ Scalable automation framework
-✔ UI + API hybrid testing
-✔ Real-world POM architecture
-✔ CI/CD integration (GitHub + Jenkins)
-✔ Allure + HTML + Newman reporting
-✔ Screenshot, video, trace debugging
-✔ Environment-based execution
+GitHub Actions includes:
 
-🚀 Project Status
-Feature	Status
-UI Automation	✅ Complete
-API Automation	✅ Complete
-Postman/Newman	✅ Complete
-CI/CD Pipeline	✅ Complete
-Reporting	✅ Complete
-Jenkins Integration	⚠️ Optional enhancement
-🌐 Live Demo
+Dependency installation
+UI test execution
+API test execution
+Report generation
+Artifact upload
+📌 Key Features
+Playwright UI automation framework
+API testing integration
+Hybrid testing approach
+POM-based structure
+CI/CD pipeline support
+Debugging (Trace, Video, Screenshot)
+Scalable framework design
+🌐 Live Report
 
-👉 GitHub Pages (Reports / Dashboard):
+👉 https://pritanu07.github.io/playwright-typescript-framework/
 
-https://pritanu07.github.io/playwright-typescript-framework/
+👩‍💻 Author
 
-👨‍💻 Author    Shanmugapriya
+Shanmugapriya Rajendran
 
-Built by QA Automation Engineer
-
-Skills demonstrated:
-
-Playwright Automation
-API Testing
-CI/CD Pipelines
-Hybrid Framework Design
-Real-world QA Engineering practices
+QA Automation Engineer
