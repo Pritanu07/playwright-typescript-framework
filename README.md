@@ -200,9 +200,10 @@ CI/CD pipeline support
 Debugging (Trace, Video, Screenshot)
 Scalable framework design
 
+🌐 ## Live Test Execution Report
 
-🌐 Live Report
-
+View the latest Allure Report here:
+https://pritanu07.github.io/playwright-typescript-framework/
 👉 https://pritanu07.github.io/playwright-typescript-framework/
 
 👩‍💻 Author
